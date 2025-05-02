@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.23.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="123eigen3版本：3.3.4gcc版本：7.5.0ubuntu版本：18.04 问题描述 ​ 运行这个机械狗的CMake项目时，遇到了许多问题，其中大部分都找到原因并解决了，但还是有一个问题迟迟没有解决，将该问题描述如下： ​ 首先，我在终端上运行了仿真环境和控制程序，没有发生任何异常。  simulation">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机械狗代码调试中遇到的问题">
+<meta property="og:url" content="http://example.com/2025/05/02/machine_dog/index.html">
+<meta property="og:site_name" content="Hirasawa Gen&#39;s Blog">
+<meta property="og:description" content="123eigen3版本：3.3.4gcc版本：7.5.0ubuntu版本：18.04 问题描述 ​ 运行这个机械狗的CMake项目时，遇到了许多问题，其中大部分都找到原因并解决了，但还是有一个问题迟迟没有解决，将该问题描述如下： ​ 首先，我在终端上运行了仿真环境和控制程序，没有发生任何异常。  simulation">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/05/02/machine_dog/simulation.png">
+<meta property="og:image" content="http://example.com/2025/05/02/machine_dog/simulation_stand.png">
+<meta property="og:image" content="http://example.com/2025/05/02/machine_dog/terminal_stand.png">
+<meta property="og:image" content="http://example.com/2025/05/02/machine_dog/simulation_error.png">
+<meta property="og:image" content="http://example.com/2025/05/02/machine_dog/terminal_error.png">
+<meta property="og:image" content="http://example.com/2025/05/02/machine_dog/crazy_breakpoint.png">
+<meta property="og:image" content="http://example.com/2025/05/02/machine_dog/O0.png">
+<meta property="og:image" content="http://example.com/2025/05/02/machine_dog/mit_ctrl.png">
+<meta property="og:image" content="http://example.com/2025/05/02/machine_dog/sim.png">
+<meta property="article:published_time" content="2025-05-02T08:00:00.000Z">
+<meta property="article:modified_time" content="2025-05-02T13:07:27.010Z">
+<meta property="article:author" content="Hirasawa Gen">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2025/05/02/machine_dog/simulation.png">
+
+
+<link rel="canonical" href="http://example.com/2025/05/02/machine_dog/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2025/05/02/machine_dog/","path":"2025/05/02/machine_dog/","title":"机械狗代码调试中遇到的问题"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>机械狗代码调试中遇到的问题 | Hirasawa Gen's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hirasawa Gen's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">解决方法</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hirasawa Gen"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Hirasawa Gen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/05/02/machine_dog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Hirasawa Gen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hirasawa Gen's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="机械狗代码调试中遇到的问题 | Hirasawa Gen's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          机械狗代码调试中遇到的问题
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-05-02 16:00:00 / 修改时间：21:07:27" itemprop="dateCreated datePublished" datetime="2025-05-02T16:00:00+08:00">2025-05-02</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">eigen3版本：3.3.4</span><br><span class="line">gcc版本：7.5.0</span><br><span class="line">ubuntu版本：18.04</span><br></pre></td></tr></table></figure>
+<h2 id="问题描述">问题描述</h2>
+<p>​ 运行这个机械狗的CMake项目时，遇到了许多问题，其中大部分都找到原因并解决了，但还是有一个问题迟迟没有解决，将该问题描述如下：</p>
+<p>​ 首先，我在终端上运行了仿真环境和控制程序，没有发生任何异常。</p>
+<figure>
+<img src="/2025/05/02/machine_dog/simulation.png" alt="simulation"><figcaption>simulation</figcaption>
+</figure>
+<span id="more"></span>
+<p>​ 然后按照pdf文件中的描述，给主机连接手柄，然后按下<code>LT+A</code>，机械狗也可以正常站立。</p>
+<figure>
+<img src="/2025/05/02/machine_dog/simulation_stand.png" alt="simulation stand"><figcaption>simulation stand</figcaption>
+</figure>
+<p>​ 终端输出：</p>
+<figure>
+<img src="/2025/05/02/machine_dog/terminal_stand.png" alt="terminal"><figcaption>terminal</figcaption>
+</figure>
+<p>​ 紧接着我按下了手柄上的<code>start</code>，这时发生了错误。</p>
+<figure>
+<img src="/2025/05/02/machine_dog/simulation_error.png" alt="simulation error"><figcaption>simulation error</figcaption>
+</figure>
+<figure>
+<img src="/2025/05/02/machine_dog/terminal_error.png" alt="terminal error"><figcaption>terminal error</figcaption>
+</figure>
+<p>​ 为了弄明白这里为什么会报错，我便进行了debug</p>
+<p>​ 我发现这个错误出现在<code>/common/src/Dynamics/FloatingBaseModel.cpp: void FloatingBaseModel&lt;T&gt;::contactJacobians()</code>函数中，该函数在<code>/user/MIT_Controller/WBC_Ctrl.cpp: void WBC_Ctrl&lt;T&gt;::_UpdateModel(const StateEstimate&lt;T&gt; &amp; state_est, const LegControllerData&lt;T&gt; * leg_data)</code> 中被调用。两个函数内容如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// common/src/Dynamics/FloatingBaseModel.cpp at line: 547</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="type">void</span> FloatingBaseModel&lt;T&gt;::<span class="built_in">contactJacobians</span>() &#123;</span><br><span class="line">  forwardKinematics();</span><br><span class="line">  <span class="built_in">biasAccelerations</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">size_t</span> k = <span class="number">0</span>; k &lt; _nGroundContact; k++) &#123;</span><br><span class="line">    _Jc[k].<span class="built_in">setZero</span>();</span><br><span class="line">    _Jcdqd[k].<span class="built_in">setZero</span>();</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!_compute_contact_info[k]) <span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">size_t</span> i = _gcParent.<span class="built_in">at</span>(k);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Rotation to absolute coords</span></span><br><span class="line">    Mat3&lt;T&gt; Rai = _Xa[i].<span class="keyword">template</span> <span class="built_in">block</span>&lt;<span class="number">3</span>, <span class="number">3</span>&gt;(<span class="number">0</span>, <span class="number">0</span>).<span class="built_in">transpose</span>();</span><br><span class="line">    Mat6&lt;T&gt; Xc = <span class="built_in">createSXform</span>(Rai, _gcLocation.<span class="built_in">at</span>(k));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Bias acceleration</span></span><br><span class="line">    SVec&lt;T&gt; ac = Xc * _avp[i];</span><br><span class="line">    SVec&lt;T&gt; vc = Xc * _v[i];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Correct to classical</span></span><br><span class="line">    _Jcdqd[k] = <span class="built_in">spatialToLinearAcceleration</span>(ac, vc);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// rows for linear velcoity in the world</span></span><br><span class="line">    D3Mat&lt;T&gt; Xout = Xc.<span class="keyword">template</span> <span class="built_in">bottomRows</span>&lt;<span class="number">3</span>&gt;(); </span><br><span class="line"></span><br><span class="line">    <span class="comment">// from tips to base</span></span><br><span class="line">    <span class="keyword">while</span> (i &gt; <span class="number">5</span>) &#123;</span><br><span class="line">      _Jc[k].<span class="built_in">col</span>(i) = Xout * _S[i];</span><br><span class="line">      Xout = Xout * _Xup[i];</span><br><span class="line">      i = _parents[i];</span><br><span class="line">    &#125;</span><br><span class="line">    _Jc[k].<span class="keyword">template</span> <span class="built_in">leftCols</span>&lt;<span class="number">6</span>&gt;() = Xout;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// user/MIT_Controller/WBC_Ctrl.cpp at line 146:</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="type">void</span> WBC_Ctrl&lt;T&gt;::_UpdateModel(<span class="type">const</span> StateEstimate&lt;T&gt; &amp; state_est, </span><br><span class="line">    <span class="type">const</span> LegControllerData&lt;T&gt; * leg_data)&#123;</span><br><span class="line"></span><br><span class="line">  _state.bodyOrientation = state_est.orientation;</span><br><span class="line">  _state.bodyPosition = state_est.position;</span><br><span class="line">  <span class="keyword">for</span>(<span class="type">size_t</span> <span class="built_in">i</span>(<span class="number">0</span>); i&lt;<span class="number">3</span>; ++i)&#123;</span><br><span class="line">    _state.bodyVelocity[i] = state_est.omegaBody[i];</span><br><span class="line">    _state.bodyVelocity[i<span class="number">+3</span>] = state_est.vBody[i];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">size_t</span> <span class="built_in">leg</span>(<span class="number">0</span>); leg&lt;<span class="number">4</span>; ++leg)&#123;</span><br><span class="line">      _state.q[<span class="number">3</span>*leg + i] = leg_data[leg].q[i];</span><br><span class="line">      _state.qd[<span class="number">3</span>*leg + i] = leg_data[leg].qd[i];</span><br><span class="line"></span><br><span class="line">      _full_config[<span class="number">3</span>*leg + i + <span class="number">6</span>] = _state.q[<span class="number">3</span>*leg + i];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  _model.<span class="built_in">setState</span>(_state);</span><br><span class="line"></span><br><span class="line">  _model.<span class="built_in">contactJacobians</span>();</span><br><span class="line">  _model.<span class="built_in">massMatrix</span>();</span><br><span class="line">  _model.<span class="built_in">generalizedGravityForce</span>();</span><br><span class="line">  _model.<span class="built_in">generalizedCoriolisForce</span>();</span><br><span class="line"></span><br><span class="line">  _A = _model.<span class="built_in">getMassMatrix</span>();</span><br><span class="line">  _grav = _model.<span class="built_in">getGravityForce</span>();</span><br><span class="line">  _coriolis = _model.<span class="built_in">getCoriolisForce</span>();</span><br><span class="line">  _Ainv = _A.<span class="built_in">inverse</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​ 根据debug显示，报错原因应该是<code>contactJacobians</code>函数中，将某个<code>DenseStorage</code>对象的析构函数执行了两次，而这个析构函数中有个释放指针的操作，这就导致同一个指针被释放了两次。至于我的推断是否正确，如果正确，又是为什么会出现上述情况？我便不是很清楚，因为该项目使用了O3级别的编译优化，debug的时候断点乱飘。</p>
+<p>​ 如图，断点卡在了579行，但实际上591行我添加的输出语句已经执行了。</p>
+<figure>
+<img src="/2025/05/02/machine_dog/crazy_breakpoint.png" alt="crazy breakpoint"><figcaption>crazy breakpoint</figcaption>
+</figure>
+<p>​ 为了防止飘来飘去的断点给debug带来的影响，我将<code>CMakeList.txt</code>文件中编译优化等级调整到O0后，却出现了编译失败的情况：</p>
+<figure>
+<img src="/2025/05/02/machine_dog/O0.png" alt="O0"><figcaption>O0</figcaption>
+</figure>
+<p>​ 随后将编译优化修改成了O1和O2，结果同O3一致。</p>
+<p>​ 无奈之下，我只好使用了古法debug，即<code>std::out</code>大法。修改后的代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// common/src/Dynamics/FloatingBaseModel.cpp at line: 547</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="type">void</span> FloatingBaseModel&lt;T&gt;::<span class="built_in">contactJacobians</span>() &#123;</span><br><span class="line">  forwardKinematics();</span><br><span class="line">  <span class="built_in">biasAccelerations</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="type">size_t</span> k = <span class="number">0</span>; k &lt; _nGroundContact; k++) &#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Loop Hajimari: &quot;</span> &lt;&lt; k &lt;&lt; <span class="string">&quot;/&quot;</span> &lt;&lt; _nGroundContact &lt;&lt; std::endl;  <span class="comment">// <span class="doctag">TODO:</span> remove</span></span><br><span class="line">    _Jc[k].<span class="built_in">setZero</span>();</span><br><span class="line">    _Jcdqd[k].<span class="built_in">setZero</span>();</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">    <span class="comment">// Skip it if we don&#x27;t care about it</span></span><br><span class="line">    <span class="keyword">if</span> (!_compute_contact_info[k]) <span class="keyword">continue</span>;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;no skipped: &quot;</span> &lt;&lt; k &lt;&lt; std::endl;  <span class="comment">// <span class="doctag">TODO:</span> remove</span></span><br><span class="line"></span><br><span class="line">    <span class="type">size_t</span> i = _gcParent.<span class="built_in">at</span>(k);</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;i: &quot;</span> &lt;&lt; i &lt;&lt; std::endl;  <span class="comment">// <span class="doctag">TODO:</span> remove</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Rotation to absolute coords</span></span><br><span class="line">    Mat3&lt;T&gt; Rai = _Xa[i].<span class="keyword">template</span> <span class="built_in">block</span>&lt;<span class="number">3</span>, <span class="number">3</span>&gt;(<span class="number">0</span>, <span class="number">0</span>).<span class="built_in">transpose</span>();</span><br><span class="line">    Mat6&lt;T&gt; Xc = <span class="built_in">createSXform</span>(Rai, _gcLocation.<span class="built_in">at</span>(k));</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Rai: \n&quot;</span> &lt;&lt; Rai &lt;&lt; <span class="string">&quot;\n&quot;</span>;  <span class="comment">// <span class="doctag">TODO:</span> remove</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Xc: \n&quot;</span> &lt;&lt; Xc &lt;&lt; <span class="string">&quot;\n&quot;</span>;  <span class="comment">// <span class="doctag">TODO:</span> remove</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Bias acceleration</span></span><br><span class="line">    SVec&lt;T&gt; ac = Xc * _avp[i];</span><br><span class="line">    SVec&lt;T&gt; vc = Xc * _v[i];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Correct to classical</span></span><br><span class="line">    _Jcdqd[k] = <span class="built_in">spatialToLinearAcceleration</span>(ac, vc);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// rows for linear velcoity in the world</span></span><br><span class="line">    D3Mat&lt;T&gt; Xout = Xc.<span class="keyword">template</span> <span class="built_in">bottomRows</span>&lt;<span class="number">3</span>&gt;(); </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Xout: \n&quot;</span> &lt;&lt; Xout &lt;&lt; <span class="string">&quot;\n&quot;</span>;  <span class="comment">// <span class="doctag">TODO:</span> remove</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// from tips to base</span></span><br><span class="line">    <span class="keyword">while</span> (i &gt; <span class="number">5</span>) &#123;</span><br><span class="line">      _Jc[k].<span class="built_in">col</span>(i) = Xout * _S[i];</span><br><span class="line">      Xout = Xout * _Xup[i];</span><br><span class="line">      i = _parents[i];</span><br><span class="line">    &#125;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Jc: \n&quot;</span> &lt;&lt; _Jc[k] &lt;&lt; <span class="string">&quot;\n&quot;</span>;  <span class="comment">// <span class="doctag">TODO:</span> remove</span></span><br><span class="line">    _Jc[k].<span class="keyword">template</span> <span class="built_in">leftCols</span>&lt;<span class="number">6</span>&gt;() = Xout;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Jc: \n&quot;</span> &lt;&lt; _Jc[k] &lt;&lt; <span class="string">&quot;\n&quot;</span>;  <span class="comment">// <span class="doctag">TODO:</span> remove</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Loop Owari&quot;</span> &lt;&lt; k &lt;&lt; <span class="string">&quot;/&quot;</span> &lt;&lt; _nGroundContact &lt;&lt; std::endl;  <span class="comment">// <span class="doctag">TODO:</span> remove</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// user/MIT_Controller/WBC_Ctrl.cpp at line: 146</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="type">void</span> WBC_Ctrl&lt;T&gt;::_UpdateModel(<span class="type">const</span> StateEstimate&lt;T&gt; &amp; state_est, </span><br><span class="line">    <span class="type">const</span> LegControllerData&lt;T&gt; * leg_data)&#123;</span><br><span class="line"></span><br><span class="line">  _state.bodyOrientation = state_est.orientation;</span><br><span class="line">  _state.bodyPosition = state_est.position;</span><br><span class="line">  <span class="keyword">for</span>(<span class="type">size_t</span> <span class="built_in">i</span>(<span class="number">0</span>); i&lt;<span class="number">3</span>; ++i)&#123;</span><br><span class="line">    _state.bodyVelocity[i] = state_est.omegaBody[i];</span><br><span class="line">    _state.bodyVelocity[i<span class="number">+3</span>] = state_est.vBody[i];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">size_t</span> <span class="built_in">leg</span>(<span class="number">0</span>); leg&lt;<span class="number">4</span>; ++leg)&#123;</span><br><span class="line">      _state.q[<span class="number">3</span>*leg + i] = leg_data[leg].q[i];</span><br><span class="line">      _state.qd[<span class="number">3</span>*leg + i] = leg_data[leg].qd[i];</span><br><span class="line"></span><br><span class="line">      _full_config[<span class="number">3</span>*leg + i + <span class="number">6</span>] = _state.q[<span class="number">3</span>*leg + i];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  _model.<span class="built_in">setState</span>(_state);</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;setState Owari&quot;</span> &lt;&lt; std::endl;  <span class="comment">// <span class="doctag">TODO:</span> remove this line</span></span><br><span class="line"></span><br><span class="line">  _model.<span class="built_in">contactJacobians</span>();</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;contactJacobians Owari&quot;</span> &lt;&lt; std::endl;  <span class="comment">// <span class="doctag">TODO:</span> remove this line</span></span><br><span class="line">  _model.<span class="built_in">massMatrix</span>();</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;massMatrix Owari&quot;</span> &lt;&lt; std::endl;  <span class="comment">// <span class="doctag">TODO:</span> remove this line</span></span><br><span class="line">  _model.<span class="built_in">generalizedGravityForce</span>();</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;generalizedGravityForce Owari&quot;</span> &lt;&lt; std::endl;  <span class="comment">// <span class="doctag">TODO:</span> remove this line</span></span><br><span class="line">  _model.<span class="built_in">generalizedCoriolisForce</span>();</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;generalizedCoriolisForce Owari&quot;</span> &lt;&lt; std::endl;  <span class="comment">// <span class="doctag">TODO:</span> remove this line</span></span><br><span class="line"></span><br><span class="line">  _A = _model.<span class="built_in">getMassMatrix</span>();</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;getMassMatrix Owari&quot;</span> &lt;&lt; std::endl;  <span class="comment">// <span class="doctag">TODO:</span> remove this line</span></span><br><span class="line">  _grav = _model.<span class="built_in">getGravityForce</span>();</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;getGravityForce Owari&quot;</span> &lt;&lt; std::endl;  <span class="comment">// <span class="doctag">TODO:</span> remove this line</span></span><br><span class="line">  _coriolis = _model.<span class="built_in">getCoriolisForce</span>();</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;getCoriolisForce Owari&quot;</span> &lt;&lt; std::endl;  <span class="comment">// <span class="doctag">TODO:</span> remove this line</span></span><br><span class="line">  _Ainv = _A.<span class="built_in">inverse</span>();</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;Ainv Owari&quot;</span> &lt;&lt; std::endl;  <span class="comment">// <span class="doctag">TODO:</span> remove this line</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​ 运行结果也还是很匪夷所思，在运行<code>./user/MIT_Controller/mit_ctrl m s</code>的运行终端中，信息如下，<code>contactJacobians</code>函数的for循环只循环了一圈就停止了。</p>
+<figure>
+<img src="/2025/05/02/machine_dog/mit_ctrl.png" alt="mit_ctrl"><figcaption>mit_ctrl</figcaption>
+</figure>
+<p>​ 但是，在<code>./sim/sim</code>运行终端里却显示，这个for循环执行完了，不过<code>&quot;contactJacobians Owari&quot;</code>并没有输出出来，说明<code>contactJacobians</code>这个函数还是没有成功执行，原因我个人觉得还是上文提到的多次释放指针的问题。但也只是猜测。</p>
+<figure>
+<img src="/2025/05/02/machine_dog/sim.png" alt="2025-05-02 18-32-44 的屏幕截图"><figcaption>2025-05-02 18-32-44 的屏幕截图</figcaption>
+</figure>
+<p>​ 多次运行了好几遍，其中有一遍<code>start</code>成功了，但是一段时间后vscode闪退，之后再未成功运行过。</p>
+<h2 id="解决方法">解决方法</h2>
+<p>暂未解决（悲</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/04/29/2025.4.29/" rel="prev" title="DynaVINS SLAM">
+                  <i class="fa fa-angle-left"></i> DynaVINS SLAM
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hirasawa Gen</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
