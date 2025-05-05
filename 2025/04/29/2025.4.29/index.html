@@ -19,12 +19,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hirasawagen.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.23.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="​ DynaVINS SLAM是一种新的可以减小动点影响的视觉惯性SLAM算法。">
+    <meta name="description" content="​	DynaVINS SLAM是一种新的可以减小动点影响的视觉惯性SLAM算法。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DynaVINS SLAM">
 <meta property="og:url" content="http://hirasawagen.github.io/2025/04/29/2025.4.29/index.html">
 <meta property="og:site_name" content="Hirasawa Gen&#39;s Blog">
-<meta property="og:description" content="​ DynaVINS SLAM是一种新的可以减小动点影响的视觉惯性SLAM算法。">
+<meta property="og:description" content="​	DynaVINS SLAM是一种新的可以减小动点影响的视觉惯性SLAM算法。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://hirasawagen.github.io/2025/04/29/2025.4.29/image.png">
 <meta property="og:image" content="http://hirasawagen.github.io/2025/04/29/2025.4.29/2daf86906ac7ee146852a7d1598cfef8.png">
@@ -131,7 +131,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E5%AF%B9%E5%85%89%E6%9D%9F%E5%B9%B3%E5%B7%AE%E6%B3%95%E7%9A%84%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">一、对光束平差法的简单介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E6%8A%95%E5%BD%B1%E8%AF%AF%E5%B7%AE"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.1 重投影误差</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#imu%E9%A2%84%E7%A7%AF%E5%88%86"><span class="nav-number">1.0.2.</span> <span class="nav-text">1.2 IMU预积分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%89%E6%9D%9F%E5%B9%B3%E5%B7%AE%E6%B3%95"><span class="nav-number">1.0.3.</span> <span class="nav-text">1.3 光束平差法</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">一、对光束平差法的简单介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E9%87%8D%E6%8A%95%E5%BD%B1%E8%AF%AF%E5%B7%AE"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.1 重投影误差</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-IMU%E9%A2%84%E7%A7%AF%E5%88%86"><span class="nav-number">1.0.2.</span> <span class="nav-text">1.2 IMU预积分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%85%89%E6%9D%9F%E5%B9%B3%E5%B7%AE%E6%B3%95"><span class="nav-number">1.0.3.</span> <span class="nav-text">1.3 光束平差法</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -220,79 +220,120 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>​ <a href="./2025.4.29/article.pdf">DynaVINS SLAM</a>是一种新的可以减小动点影响的视觉惯性SLAM算法。 <img src="/2025/04/29/2025.4.29/image.png" alt="DynaVINS SLAM"> <span id="more"></span></p>
-<h1 id="一对光束平差法的简单介绍">一、对光束平差法的简单介绍</h1>
-<p>​ 光束平差法（Bundle Adjustment），是一种视觉SLAM领域常用的算法，该算法的核心是最小化重投影误差。</p>
-<h3 id="重投影误差">1.1 重投影误差</h3>
-<figure>
-<img src="/2025/04/29/2025.4.29/2daf86906ac7ee146852a7d1598cfef8.png" alt="重投影误差"><figcaption>重投影误差</figcaption>
-</figure>
-<p>​ 给定两组数据：</p>
-<ul>
-<li><p>某个三维点在空间中的三维坐标。</p></li>
-<li><p>某个相机在三维空间中的六个自由度</p>
-<p>首先通过数学计算将三维点投影到相机平面上，然后计算理论投影点和相机真实捕捉到的点之间的误差，这个误差就被称为重投影误差。</p></li>
+    <div class="post-body" itemprop="articleBody"><p>​	<a href="./2025.4.29/article.pdf">DynaVINS SLAM</a>是一种新的可以减小动点影响的视觉惯性SLAM算法。<br>
+<img src="/2025/04/29/2025.4.29/image.png" alt="DynaVINS SLAM"></p>
+<span id="more"></span>
+<h1>一、对光束平差法的简单介绍</h1>
+<p>​	光束平差法（Bundle Adjustment），是一种视觉SLAM领域常用的算法，该算法的核心是最小化重投影误差。</p>
+<h3 id="1-1-重投影误差">1.1 重投影误差</h3>
+<p><img src="/2025/04/29/2025.4.29/2daf86906ac7ee146852a7d1598cfef8.png" alt="重投影误差"></p>
+<p>​	给定两组数据：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>某个三维点在空间中的三维坐标。</p>
+</li>
+<li class="lvl-2">
+<p>某个相机在三维空间中的六个自由度</p>
+<p>首先通过数学计算将三维点投影到相机平面上，然后计算理论投影点和相机真实捕捉到的点之间的误差，这个误差就被称为重投影误差。</p>
+</li>
 </ul>
-<h3 id="imu预积分">1.2 IMU预积分</h3>
-<figure>
-<img src="/2025/04/29/2025.4.29/2765be16fdea76bcd3add3ea0948e34f.png" alt="惯性测量单元"><figcaption>惯性测量单元</figcaption>
-</figure>
-<p>​ IMU（Inertial Measurement Unit），即惯性测量单元，它可以用来测量机器人在三个坐标方向上的加速度和角加速度。对相邻两帧之间的加速度和角加速度的值进行积分即可得到相对运动增量。</p>
-<p>​ 但是直接进行积分可能会有严重的累计误差，并且计算复杂度较高。</p>
-<p>​ 而在预积分技术中，可以通过噪声分离和协方差递推抑制误差，并减少计算量。（这里有很多复杂的数学公式，我还没推导）</p>
-<h3 id="光束平差法">1.3 光束平差法</h3>
-<p>​ 本文中将传统的光束平差法的公式表示为： <br><span class="math display">arg min<sub>𝒳</sub>{‖<strong>r</strong><sub><em>p</em></sub> − <strong>H</strong><sub><em>p</em></sub>𝒳‖<sup>2</sup> + ∑<sub><em>k</em> ∈ ℬ</sub>‖<strong>r</strong><sub>ℐ</sub>(<em>ẑ</em><sub><em>b</em><sub><em>k</em> + 1</sub></sub><sup><em>b</em><sub><em>k</em></sub></sup>, 𝒳)‖<sub><strong>P</strong><sub><em>b</em><sub><em>k</em> + 1</sub></sub><sup><em>b</em><sub><em>k</em></sub></sup></sub><sup>2</sup> + ∑<sub>(<em>i</em>, <em>j</em>)∈𝒫</sub><em>ρ</em><sub><strong>H</strong></sub>(‖<strong>r</strong><sub>𝒫</sub>(<em>ẑ</em><sub><em>j</em></sub><sup><em>C</em><sub><em>j</em></sub></sup>, 𝒳)‖<sub><strong>P</strong><sub><em>j</em></sub><sup><em>C</em><sub><em>i</em></sub></sup></sub><sup>2</sup>)}</span><br> ​ 其中一些符号的含义为：</p>
-<ul>
-<li><span class="math inline"><em>C</em><sub><em>i</em></sub></span>
-<ul>
-<li>第<span class="math inline"><em>i</em></span>个相机帧</li>
-</ul></li>
-<li><span class="math inline"><em>f</em><sub><em>j</em></sub></span>
-<ul>
-<li>第<span class="math inline"><em>j</em></span>个特征点</li>
-</ul></li>
-<li><span class="math inline"><em>T</em><sub><em>B</em></sub><sup><em>A</em></sup> ∈ <em>S</em><em>E</em>(3)</span>
-<ul>
-<li>相机<span class="math inline"><em>A</em></span>到相机<span class="math inline"><em>B</em></span>的变换</li>
-</ul></li>
-<li><span class="math inline">ℬ</span>
-<ul>
-<li>一组IMU预积分值</li>
-</ul></li>
-<li><span class="math inline">𝒫</span>
-<ul>
-<li>由成对的<span class="math inline">(<em>C</em><sub><em>i</em></sub>, <em>f</em><sub><em>j</em></sub>)</span>组成的集合，表示相机帧<span class="math inline"><em>C</em><sub><em>i</em></sub></span>可以采集到<span class="math inline"><em>f</em><sub><em>j</em></sub></span></li>
-</ul></li>
-<li><span class="math inline">𝒫(<em>f</em><sub><em>j</em></sub>)</span>
-<ul>
-<li>所有可以采集到<span class="math inline"><em>f</em><sub><em>j</em></sub></span>的相机帧的集合</li>
-</ul></li>
-<li><span class="math inline"><em>ẑ</em><sub><em>b</em><sub><em>k</em> + 1</sub></sub><sup><em>b</em><sub><em>k</em></sub></sup></span>
-<ul>
-<li>基于相邻两帧的IMU预积分值对机器人位姿的估计</li>
-</ul></li>
-<li><span class="math inline"><em>ẑ</em><sub><em>j</em></sub><sup><em>C</em><sub><em>j</em></sub></sup></span>
-<ul>
-<li>基于相机<span class="math inline"><em>C</em><sub><em>j</em></sub></span>和特征点<span class="math inline"><em>f</em><sub><em>j</em></sub></span>的视觉重投影位姿估计</li>
-</ul></li>
-<li><span class="math inline"><strong>r</strong><sub>ℐ</sub></span>
-<ul>
-<li>视觉重投影测量的误差</li>
-</ul></li>
-<li><span class="math inline"><strong>r</strong><sub>𝒫</sub></span>
-<ul>
-<li>IMU预积分测量的误差</li>
-</ul></li>
-<li><span class="math inline"><em>ρ</em><sub><strong>H</strong></sub></span>
-<ul>
-<li>Huber损失函数</li>
-</ul></li>
+<h3 id="1-2-IMU预积分">1.2 IMU预积分</h3>
+<p><img src="/2025/04/29/2025.4.29/2765be16fdea76bcd3add3ea0948e34f.png" alt="惯性测量单元"></p>
+<p>​	IMU（Inertial Measurement Unit），即惯性测量单元，它可以用来测量机器人在三个坐标方向上的加速度和角加速度。对相邻两帧之间的加速度和角加速度的值进行积分即可得到相对运动增量。</p>
+<p>​	但是直接进行积分可能会有严重的累计误差，并且计算复杂度较高。</p>
+<p>​	而在预积分技术中，可以通过噪声分离和协方差递推抑制误差，并减少计算量。（这里有很多复杂的数学公式，我还没推导）</p>
+<h3 id="1-3-光束平差法">1.3 光束平差法</h3>
+<p>​	本文中将传统的光束平差法的公式表示为：<br>
+$$<br>
+\arg\min_\mathcal{X}\bigg{<br>
+\Vert<br>
+\mathbf{r}<em>p-\mathbf{H}<em>p\mathcal{X}<br>
+\Vert^2+<br>
+\sum</em>{k\in\mathcal{B}}\Vert<br>
+\mathbf{r}</em>\mathcal{I}(\hat{z}^{b_{k}}<em>{b</em>{k+1}},\mathcal{X})<br>
+\Vert<sup>2_{\mathbf{P}</sup>{b_{k}}<em>{b</em>{k+1}}}+<br>
+\sum_{(i,j)\in\mathcal{P}}\rho_\mathbf{H}\big(\Vert<br>
+\mathbf{r}<em>\mathcal{P}(\hat{z}^{C</em>{j}}<em>j,\mathcal{X})<br>
+\Vert<sup>2_{\mathbf{P}</sup>{C</em>{i}}_j}\big)<br>
+\bigg}<br>
+$$​	其中一些符号的含义为：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>$C_i$</p>
+<ul class="lvl-2">
+<li class="lvl-4">第$i$个相机帧</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>$f_j$</p>
+<ul class="lvl-2">
+<li class="lvl-4">第$j$个特征点</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>$T^A_B\in SE(3)$</p>
+<ul class="lvl-2">
+<li class="lvl-4">相机$A$到相机$B$的变换</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>$\mathcal{B}$</p>
+<ul class="lvl-2">
+<li class="lvl-4">一组IMU预积分值</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>$\mathcal{P}$</p>
+<ul class="lvl-2">
+<li class="lvl-4">由成对的$(C_i,f_j)$组成的集合，表示相机帧$C_i$可以采集到$f_j$</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>$\mathcal{P}(f_j)$</p>
+<ul class="lvl-2">
+<li class="lvl-4">所有可以采集到$f_j$的相机帧的集合</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>$\hat{z}^{b_{k}}<em>{b</em>{k+1}}$</p>
+<ul class="lvl-2">
+<li class="lvl-4">基于相邻两帧的IMU预积分值对机器人位姿的估计</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>$\hat{z}^{C_{j}}_j$</p>
+<ul class="lvl-2">
+<li class="lvl-4">基于相机$C_j$和特征点$f_j$的视觉重投影位姿估计</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>$\mathbf{r}_\mathcal{I}$</p>
+<ul class="lvl-2">
+<li class="lvl-4">视觉重投影测量的误差</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>$\mathbf{r}_\mathcal{P}$</p>
+<ul class="lvl-2">
+<li class="lvl-4">IMU预积分测量的误差</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>$\rho_\mathbf{H}$</p>
+<ul class="lvl-2">
+<li class="lvl-4">Huber损失函数</li>
+</ul>
+</li>
 </ul>
 <p>传统的光束平差法通过最小化重投影误差和IMU预积分误差来优化相机位姿和特征点的位置。</p>
 <p>但是当离群点增加时，光束平差法的性能会变得很差。因此，为了解决以上问题，本文提出了一种新的光束平差法，主要做了两点改进：</p>
-<ol type="1">
-<li><p>利用IMU预积分的正则化因数。</p></li>
-<li><p>一个动量因数，用于考虑每個权重的先前状态，以涵盖预积分暂时不准确的情况。</p></li>
+<ol>
+<li class="lvl-3">
+<p>利用IMU预积分的正则化因数。</p>
+</li>
+<li class="lvl-3">
+<p>一个动量因数，用于考虑每個权重的先前状态，以涵盖预积分暂时不准确的情况。</p>
+</li>
 </ol>
 
     </div>
