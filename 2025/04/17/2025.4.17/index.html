@@ -19,12 +19,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hirasawagen.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.23.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="一、发现问题的契机 ​	在小车的系统里面有一个工作空间，里面有很多写好的demo。运行了几个试试，但是其中一个名为“雷达跟随”的demo。却出现了运行没有反应的情况，甚至没有报错。运行多次无果后我逐行阅读了终端上的信息：  ​	经过上网查阅资料排查后，发现问题产生的关键是那句警告： New publisher discovered on topic &#39;&#x2F;scan&#39;, offering incomp">
+    <meta name="description" content="一、发现问题的契机 ​ 在小车的系统里面有一个工作空间，里面有很多写好的demo。运行了几个试试，但是其中一个名为“雷达跟随”的demo。却出现了运行没有反应的情况，甚至没有报错。运行多次无果后我逐行阅读了终端上的信息：  QOS错误  ​ 经过上网查阅资料排查后，发现问题产生的关键是那句警告： New publisher discovered on topic &#39;&#x2F;scan&#39;, of">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ROS2 Qos问题解决">
 <meta property="og:url" content="http://hirasawagen.github.io/2025/04/17/2025.4.17/index.html">
 <meta property="og:site_name" content="Hirasawa Gen&#39;s Blog">
-<meta property="og:description" content="一、发现问题的契机 ​	在小车的系统里面有一个工作空间，里面有很多写好的demo。运行了几个试试，但是其中一个名为“雷达跟随”的demo。却出现了运行没有反应的情况，甚至没有报错。运行多次无果后我逐行阅读了终端上的信息：  ​	经过上网查阅资料排查后，发现问题产生的关键是那句警告： New publisher discovered on topic &#39;&#x2F;scan&#39;, offering incomp">
+<meta property="og:description" content="一、发现问题的契机 ​ 在小车的系统里面有一个工作空间，里面有很多写好的demo。运行了几个试试，但是其中一个名为“雷达跟随”的demo。却出现了运行没有反应的情况，甚至没有报错。运行多次无果后我逐行阅读了终端上的信息：  QOS错误  ​ 经过上网查阅资料排查后，发现问题产生的关键是那句警告： New publisher discovered on topic &#39;&#x2F;scan&#39;, of">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://hirasawagen.github.io/2025/04/17/2025.4.17/f144e1d6de5f7436be35e35786accda1.png">
 <meta property="og:image" content="http://hirasawagen.github.io/2025/04/17/2025.4.17/65f6cf3ba3dcd5275a750d160304ff6a.png">
@@ -133,7 +133,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%8F%91%E7%8E%B0%E9%97%AE%E9%A2%98%E7%9A%84%E5%A5%91%E6%9C%BA"><span class="nav-number">1.</span> <span class="nav-text">一、发现问题的契机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E9%80%9A%E8%AE%AF%E6%9C%8D%E5%8A%A1%E8%B4%A8%E9%87%8FQos"><span class="nav-number">2.</span> <span class="nav-text">二、通讯服务质量Qos</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%9F%A5%E7%9C%8B%E6%BA%90%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">三、查看源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81build%E7%9B%AE%E5%BD%95%E4%B8%8Ecolcon-build"><span class="nav-number">4.</span> <span class="nav-text">四、build目录与colcon build</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%AF%B9%E5%9D%91%E7%82%B9%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">五、对坑点的一些总结</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E5%8F%91%E7%8E%B0%E9%97%AE%E9%A2%98%E7%9A%84%E5%A5%91%E6%9C%BA"><span class="nav-number">1.</span> <span class="nav-text">一、发现问题的契机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E6%9F%A5%E7%9C%8B%E6%BA%90%E7%A0%81"><span class="nav-number">2.</span> <span class="nav-text">三、查看源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9Bbuild%E7%9B%AE%E5%BD%95%E4%B8%8Ecolcon-build"><span class="nav-number">3.</span> <span class="nav-text">四、build目录与colcon build</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E5%AF%B9%E5%9D%91%E7%82%B9%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">五、对坑点的一些总结</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -148,7 +148,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -237,84 +237,87 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="一、发现问题的契机">一、发现问题的契机</h2>
-<p>​	在小车的系统里面有一个工作空间，里面有很多写好的demo。运行了几个试试，但是其中一个名为“雷达跟随”的demo。却出现了运行没有反应的情况，甚至没有报错。运行多次无果后我逐行阅读了终端上的信息：</p>
-<p><img src="/2025/04/17/2025.4.17/f144e1d6de5f7436be35e35786accda1.png" alt="QOS错误"></p>
-<p>​	经过上网查阅资料排查后，发现问题产生的关键是那句警告：</p>
+    <div class="post-body" itemprop="articleBody"><h2 id="一发现问题的契机">一、发现问题的契机</h2>
+<p>​ 在小车的系统里面有一个工作空间，里面有很多写好的demo。运行了几个试试，但是其中一个名为“雷达跟随”的demo。却出现了运行没有反应的情况，甚至没有报错。运行多次无果后我逐行阅读了终端上的信息：</p>
+<figure>
+<img src="/2025/04/17/2025.4.17/f144e1d6de5f7436be35e35786accda1.png" alt="QOS错误"><figcaption>QOS错误</figcaption>
+</figure>
+<p>​ 经过上网查阅资料排查后，发现问题产生的关键是那句警告：</p>
 <p><code>New publisher discovered on topic '/scan', offering incompatible Qos. No messages will be received from it.</code></p>
-<p>​	也就是节点<code>lasertracker</code>中配置了不合适的Qos，导致该话题无法接收信息。于是我便上网搜索所谓的Qos是什么。</p>
-<span id="more"></span>
-<h2 id="二、通讯服务质量Qos">二、通讯服务质量Qos</h2>
-<p>​	在鱼香Ros社区上找到了Ros大佬小鱼关于Qos的一篇介绍：<a target="_blank" rel="noopener" href="https://fishros.org.cn/forum/topic/1757/ros2%E9%80%9A%E8%AE%AF%E6%9C%8D%E5%8A%A1%E8%B4%A8%E9%87%8Fqos%E4%BB%8B%E7%BB%8D%E4%B8%8E%E6%A0%B7%E4%BE%8B">ROS2通讯服务质量Qos介绍与样例 | 鱼香ROS</a></p>
-<p>​	简单地说就是，为了兼容不同场景下的通信需求，ROS 2 提供了 服务多样的 Qos 服务质量来调整通信策略。但是这也会带来问题，例如话题成功发布了，当订阅者进行订阅时，却被Ros系统认为通信质量无法保证，因此无法订阅。而出现上述问题是不会进行报错的，正如上文所示，这无疑为代码调试带来了巨大的麻烦。</p>
-<p>​	例如，当发布者的Qos兼容属性设置为<code>BEST_EFFORT</code>，而订阅者的Qos兼容属性设置为<code>RELIABLE</code>，就会出现无法通信的情况。</p>
+<p>​ 也就是节点<code>lasertracker</code>中配置了不合适的Qos，导致该话题无法接收信息。于是我便上网搜索所谓的Qos是什么。 <span id="more"></span> ## 二、通讯服务质量Qos</p>
+<p>​ 在鱼香Ros社区上找到了Ros大佬小鱼关于Qos的一篇介绍：<a target="_blank" rel="noopener" href="https://fishros.org.cn/forum/topic/1757/ros2通讯服务质量qos介绍与样例">ROS2通讯服务质量Qos介绍与样例 | 鱼香ROS</a></p>
+<p>​ 简单地说就是，为了兼容不同场景下的通信需求，ROS 2 提供了 服务多样的 Qos 服务质量来调整通信策略。但是这也会带来问题，例如话题成功发布了，当订阅者进行订阅时，却被Ros系统认为通信质量无法保证，因此无法订阅。而出现上述问题是不会进行报错的，正如上文所示，这无疑为代码调试带来了巨大的麻烦。</p>
+<p>​ 例如，当发布者的Qos兼容属性设置为<code>BEST_EFFORT</code>，而订阅者的Qos兼容属性设置为<code>RELIABLE</code>，就会出现无法通信的情况。</p>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>Publisher</th>
 <th>Subscriber</th>
 <th>是否可以进行通信？</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>BEST_EFFORT</td>
 <td>BEST_EFFORT</td>
 <td>是</td>
 </tr>
-<tr>
+<tr class="even">
 <td>BEST_EFFORT</td>
 <td>RELIABLE</td>
 <td>否</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>RELIABLE</td>
 <td>BEST_EFFORT</td>
 <td>是</td>
 </tr>
-<tr>
+<tr class="even">
 <td>RELIABLE</td>
 <td>RELIABLE</td>
 <td>是</td>
 </tr>
 </tbody>
 </table>
-<p>​	通过ros2指令查看关于话题<code>/scan</code>的Qos相关配置：</p>
-<p><img src="/2025/04/17/2025.4.17/65f6cf3ba3dcd5275a750d160304ff6a.png" alt="Qos /scan"></p>
-<p>​	可以发现确实是出现了上述的情况导致的无法通信。</p>
-<p>​	那么问题解决起来也很简单，只需要把订阅者的Qos兼容属性也设置为<code>BEST_EFFORT</code>就好了。</p>
-<h2 id="三、查看源码">三、查看源码</h2>
-<p>​	打开了节点<code>lasertracker</code>对应的python文件<code>laserTracker.py</code>，其中内容如下所示：</p>
+<p>​ 通过ros2指令查看关于话题<code>/scan</code>的Qos相关配置：</p>
+<figure>
+<img src="/2025/04/17/2025.4.17/65f6cf3ba3dcd5275a750d160304ff6a.png" alt="Qos /scan"><figcaption>Qos /scan</figcaption>
+</figure>
+<p>​ 可以发现确实是出现了上述的情况导致的无法通信。</p>
+<p>​ 那么问题解决起来也很简单，只需要把订阅者的Qos兼容属性也设置为<code>BEST_EFFORT</code>就好了。</p>
+<h2 id="三查看源码">三、查看源码</h2>
+<p>​ 打开了节点<code>lasertracker</code>对应的python文件<code>laserTracker.py</code>，其中内容如下所示：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># Copyright 2016 Open Source Robotics Foundation, Inc.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> rclpy</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> rclpy.node <span class="keyword">import</span> Node</span><br><span class="line"><span class="keyword">from</span> rclpy.qos <span class="keyword">import</span> QoSProfile</span><br><span class="line"><span class="keyword">from</span> sensor_msgs.msg <span class="keyword">import</span> Joy, LaserScan</span><br><span class="line"><span class="keyword">from</span> turn_on_wheeltec_robot.msg <span class="keyword">import</span> Position <span class="keyword">as</span> PositionMsg</span><br><span class="line"><span class="keyword">from</span> rclpy.qos <span class="keyword">import</span> QoSProfile,QoSPresetProfiles</span><br><span class="line"><span class="keyword">from</span> rclpy.qos <span class="keyword">import</span> qos_profile_sensor_data</span><br><span class="line"><span class="keyword">from</span> std_msgs.msg <span class="keyword">import</span> String <span class="keyword">as</span> StringMsg</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LaserTracker</span>(<span class="title class_ inherited__">Node</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__(<span class="string">&#x27;lasertracker&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.lastScan=<span class="literal">None</span></span><br><span class="line">        <span class="comment"># qos = QoSProfile(depth=10)</span></span><br><span class="line">        <span class="variable language_">self</span>.winSize = <span class="variable language_">self</span>.declare_parameter(<span class="string">&#x27;~winSize&#x27;</span>, <span class="number">2</span>)</span><br><span class="line">        <span class="variable language_">self</span>.deltaDist =<span class="variable language_">self</span>.declare_parameter(<span class="string">&#x27;~deltaDist&#x27;</span>, <span class="number">0.2</span>)</span><br><span class="line">        <span class="variable language_">self</span>.positionPublisher = <span class="variable language_">self</span>.create_publisher(PositionMsg, <span class="string">&#x27;object_tracker/current_position&#x27;</span>, <span class="number">10</span>)</span><br><span class="line">        <span class="variable language_">self</span>.infoPublisher = <span class="variable language_">self</span>.create_publisher(StringMsg, <span class="string">&#x27;object_tracker/info&#x27;</span>, <span class="number">10</span>)</span><br><span class="line">        <span class="variable language_">self</span>.scanSubscriber = <span class="variable language_">self</span>.create_subscription(</span><br><span class="line">            LaserScan,</span><br><span class="line">            <span class="string">&#x27;/scan&#x27;</span>,</span><br><span class="line">            <span class="variable language_">self</span>.registerScan,</span><br><span class="line">            qos_profile=qos_profile_sensor_data</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">registerScan</span>(<span class="params">self, scan_data</span>):</span><br><span class="line">        <span class="comment"># ...略</span></span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>(<span class="params">args=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;starting&#x27;</span>)</span><br><span class="line">    rclpy.init(args=args)</span><br><span class="line">    lasertracker = LaserTracker()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;seem to do something&#x27;</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        rclpy.spin(lasertracker)</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        lasertracker.destroy_node()</span><br><span class="line">        rclpy.shutdown()</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
-<p>​	可以看到代码中对订阅者使用的Qos配置是<code>rclpy.qos.qos_profile_sensor_data</code>这个在rclpy库中已经定义好的Qos文件，而不是自己设置的。那可能就是这个变量的reliability属性是<code>RELIABLE</code>。</p>
-<p>​	在交互式python页面中查看：</p>
-<p><img src="/2025/04/17/2025.4.17/1bd5fc0dfd5f559bcfa112978aa9115d.png" alt="qos_profile_sensor_data"></p>
-<p>​	可以看到<code>qos_profile_sensor_data</code>这个变量提供的兼容属性就是我们需要的<code>BEST_EFFORT</code>，那为什么将这个配置传参给订阅者后，订阅者的兼容属性却变成了我们不需要的<code>RELIABLE</code>？</p>
-<p>​	仔细查看代码也并没有发现代码中有修改过订阅者的Qos相关设置。</p>
-<h2 id="四、build目录与colcon-build">四、build目录与colcon build</h2>
-<p>​	这时我突然想到，其实同一个python代码，在ros2工作空间中是有两份的，一份写在软件包文件夹里，另一份是通过<code>colcon build</code>编译后，在<code>build</code>目录下自动生成，最后执行ros2命令时，实际执行的是<code>build</code>目录里面的代码，有没有可能是编写demo的作者在改完代码之后没有编译？于是我查看了<code>build</code>目录中的代码，发现是这样的：</p>
+<p>​ 可以看到代码中对订阅者使用的Qos配置是<code>rclpy.qos.qos_profile_sensor_data</code>这个在rclpy库中已经定义好的Qos文件，而不是自己设置的。那可能就是这个变量的reliability属性是<code>RELIABLE</code>。</p>
+<p>​ 在交互式python页面中查看：</p>
+<figure>
+<img src="/2025/04/17/2025.4.17/1bd5fc0dfd5f559bcfa112978aa9115d.png" alt="qos_profile_sensor_data"><figcaption>qos_profile_sensor_data</figcaption>
+</figure>
+<p>​ 可以看到<code>qos_profile_sensor_data</code>这个变量提供的兼容属性就是我们需要的<code>BEST_EFFORT</code>，那为什么将这个配置传参给订阅者后，订阅者的兼容属性却变成了我们不需要的<code>RELIABLE</code>？</p>
+<p>​ 仔细查看代码也并没有发现代码中有修改过订阅者的Qos相关设置。</p>
+<h2 id="四build目录与colcon-build">四、build目录与colcon build</h2>
+<p>​ 这时我突然想到，其实同一个python代码，在ros2工作空间中是有两份的，一份写在软件包文件夹里，另一份是通过<code>colcon build</code>编译后，在<code>build</code>目录下自动生成，最后执行ros2命令时，实际执行的是<code>build</code>目录里面的代码，有没有可能是编写demo的作者在改完代码之后没有编译？于是我查看了<code>build</code>目录中的代码，发现是这样的：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># Copyright 2016 Open Source Robotics Foundation, Inc.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> rclpy</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> rclpy.node <span class="keyword">import</span> Node</span><br><span class="line"><span class="keyword">from</span> rclpy.qos <span class="keyword">import</span> QoSProfile</span><br><span class="line"><span class="keyword">from</span> sensor_msgs.msg <span class="keyword">import</span> Joy, LaserScan</span><br><span class="line"><span class="keyword">from</span> turn_on_wheeltec_robot.msg <span class="keyword">import</span> Position <span class="keyword">as</span> PositionMsg</span><br><span class="line"><span class="keyword">from</span> rclpy.qos <span class="keyword">import</span> QoSProfile,QoSPresetProfiles</span><br><span class="line"><span class="keyword">from</span> rclpy.qos <span class="keyword">import</span> qos_profile_sensor_data</span><br><span class="line"><span class="keyword">from</span> std_msgs.msg <span class="keyword">import</span> String <span class="keyword">as</span> StringMsg</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LaserTracker</span>(<span class="title class_ inherited__">Node</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__(<span class="string">&#x27;lasertracker&#x27;</span>)</span><br><span class="line">        <span class="variable language_">self</span>.lastScan=<span class="literal">None</span></span><br><span class="line">        qos = QoSProfile(depth=<span class="number">10</span>)</span><br><span class="line">        <span class="variable language_">self</span>.winSize = <span class="variable language_">self</span>.declare_parameter(<span class="string">&#x27;~winSize&#x27;</span>, <span class="number">2</span>)</span><br><span class="line">        <span class="variable language_">self</span>.deltaDist =<span class="variable language_">self</span>.declare_parameter(<span class="string">&#x27;~deltaDist&#x27;</span>, <span class="number">0.2</span>)</span><br><span class="line">        <span class="variable language_">self</span>.positionPublisher = <span class="variable language_">self</span>.create_publisher(PositionMsg, <span class="string">&#x27;object_tracker/current_position&#x27;</span>, <span class="number">10</span>)</span><br><span class="line">        <span class="variable language_">self</span>.infoPublisher = <span class="variable language_">self</span>.create_publisher(StringMsg, <span class="string">&#x27;object_tracker/info&#x27;</span>, <span class="number">10</span>)</span><br><span class="line">        <span class="variable language_">self</span>.scanSubscriber = <span class="variable language_">self</span>.create_subscription(</span><br><span class="line">            LaserScan,</span><br><span class="line">            <span class="string">&#x27;/scan&#x27;</span>,</span><br><span class="line">            <span class="variable language_">self</span>.registerScan,</span><br><span class="line">            qos_profile=qos</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">registerScan</span>(<span class="params">self, scan_data</span>):</span><br><span class="line">        <span class="comment"># ...略</span></span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>(<span class="params">args=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;starting&#x27;</span>)</span><br><span class="line">    rclpy.init(args=args)</span><br><span class="line">    lasertracker = LaserTracker()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;seem to do something&#x27;</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        rclpy.spin(lasertracker)</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        lasertracker.destroy_node()</span><br><span class="line">        rclpy.shutdown()</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
-<p>​	可以看到改代码中使用的是自定义的Qos配置，和软件包目录下的代码不一样，确实是编写demo的人改完代码没有编译。</p>
-<p>​	那就进行编译吧。</p>
-<p><img src="/2025/04/17/2025.4.17/11844ab41469a968dd15cda051aa3723.png" alt="colcon build"></p>
-<p>​	编译失败，排查报错原因，发现这个工作空间写的非常巨大庞杂，非常混乱。实在不知道怎么改。</p>
-<p>​	不过好在<code>colcon build</code>可以仅编译指定某个软件包进行编译，其他软件包不进行编译。通过这种方式进行编译：</p>
-<p><img src="/2025/04/17/2025.4.17/2e939e3977403c544385f28ad905012f.png" alt="colcon build --symlink-install"></p>
-<p>​	编译成功。</p>
-<p>​	再次运行该launch文件，会议室里清脆的轮胎转动声告诉了我这次没问题了。</p>
-<p><video src="./2025.4.17/VID_20250417_013313.mp4"></video></p>
-<p>​	虽然不太灵敏，但是小车依然可以做到感受到障碍物后避开。</p>
-<h2 id="五、对坑点的一些总结">五、对坑点的一些总结</h2>
-<ol>
-<li class="lvl-3">
-<p>首先是ros2的Qos配置问题，这个东西如果配置错误只会警告，不会报错。如果出现话题或服务无法通信的问题，很有可能是这里的问题。</p>
-</li>
-<li class="lvl-3">
-<p>其次是这个demo可能有问题，咱们到时候部署自己的代码最好新建一个工作空间，不要用他的。</p>
-</li>
-<li class="lvl-3">
-<p>还有就是关于colcon build，经常编写python可能就习惯了只保存不编译，但是ros2是个例外，即便是python节点也得注意多编译。</p>
-</li>
+<p>​ 可以看到改代码中使用的是自定义的Qos配置，和软件包目录下的代码不一样，确实是编写demo的人改完代码没有编译。</p>
+<p>​ 那就进行编译吧。</p>
+<figure>
+<img src="/2025/04/17/2025.4.17/11844ab41469a968dd15cda051aa3723.png" alt="colcon build"><figcaption>colcon build</figcaption>
+</figure>
+<p>​ 编译失败，排查报错原因，发现这个工作空间写的非常巨大庞杂，非常混乱。实在不知道怎么改。</p>
+<p>​ 不过好在<code>colcon build</code>可以仅编译指定某个软件包进行编译，其他软件包不进行编译。通过这种方式进行编译：</p>
+<figure>
+<img src="/2025/04/17/2025.4.17/2e939e3977403c544385f28ad905012f.png" alt="colcon build –symlink-install"><figcaption>colcon build –symlink-install</figcaption>
+</figure>
+<p>​ 编译成功。</p>
+<p>​ 再次运行该launch文件，会议室里清脆的轮胎转动声告诉了我这次没问题了。</p>
+<video src="./2025.4.17/VID_20250417_013313.mp4">
+</video>
+<p>​ 虽然不太灵敏，但是小车依然可以做到感受到障碍物后避开。</p>
+<h2 id="五对坑点的一些总结">五、对坑点的一些总结</h2>
+<ol type="1">
+<li>首先是ros2的Qos配置问题，这个东西如果配置错误只会警告，不会报错。如果出现话题或服务无法通信的问题，很有可能是这里的问题。</li>
+<li>其次是这个demo可能有问题，咱们到时候部署自己的代码最好新建一个工作空间，不要用他的。</li>
+<li>还有就是关于colcon build，经常编写python可能就习惯了只保存不编译，但是ros2是个例外，即便是python节点也得注意多编译。</li>
 </ol>
 <p>​</p>
 
@@ -409,5 +412,5 @@
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
 </noscript>
 
-<script src="/live2d_models/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2d_models/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":true,"model":{"jsonPath":"/live2d_models/assets/assets/miku.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":true},"react":{"opacity":1},"log":false});</script></body>
+<script src="/live2d_models/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2d_models/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":true,"model":{"jsonPath":"/live2d_models/assets/assets/miku.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":false},"react":{"opacity":1},"log":false});</script></body>
 </html>
