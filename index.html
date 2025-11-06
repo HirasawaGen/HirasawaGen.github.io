@@ -255,7 +255,7 @@ mjx-container[display="true"] + br {
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -277,6 +277,249 @@ mjx-container[display="true"] + br {
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://hirasawagen.github.io/2025/11/06/oprands_constraint/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Hirasawa Gen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hirasawa Gen's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Hirasawa Gen's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/11/06/oprands_constraint/" class="post-title-link" itemprop="url">参数约束</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-11-06 16:00:00 / 修改时间：16:46:12" itemprop="dateCreated datePublished" datetime="2025-11-06T16:00:00+08:00">2025-11-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="总结">总结</h2>
+<p>在日常开发（尤其是计算机视觉、深度学习等对张量 / 数组维度敏感的场景）中，维度不匹配是高频且隐蔽的问题。例如忘记池化操作、通道数计算错误、矩阵乘行列不匹配等情况，往往不会在代码执行时立刻报错 —— 程序可能正常运行并输出结果，但错误的维度会像 “隐藏的隐患”，在后续流程（如模型训练、下游任务推理）中突然暴雷，此时排查问题需要回溯整个数据处理链路，耗时耗力。</p>
+<p>而通过 <code>oprands_constraint</code> 提供的参数约束能力，我们可以将维度校验前置。函数或网络在对应的约束不满足时会直接报错不往下执行，并且会将具体哪里有问题清晰地在终端输出。</p>
+<!-- ![yukari](./oprands_constraint/c3fce2f6c88edfeac0df73b4c19b1bc5_720.jpg) -->
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/11/06/oprands_constraint/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://hirasawagen.github.io/2025/11/02/CA-Nav/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Hirasawa Gen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hirasawa Gen's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Hirasawa Gen's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/11/02/CA-Nav/" class="post-title-link" itemprop="url">在CA-Nav的基础做出改进的几点想法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-11-02 12:12:50" itemprop="dateCreated datePublished" datetime="2025-11-02T12:12:50+08:00">2025-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-11-06 16:59:27" itemprop="dateModified" datetime="2025-11-06T16:59:27+08:00">2025-11-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>针对 CA-Nav 原框架的不足，提出三项轻量化优化：一是通过 LLM 对任务合理性打分，动态分配步数，避免无效探索；二是让位置约束优先，agent 先找目标地点再寻物，贴合人类导航逻辑；三是对无位置约束的任务，用 LLM 补全物体最可能出现的场景，提升搜索效率。</p>
+<p><img src="/2025/11/02/CA-Nav/anno_img.png" alt="anno_img"></p>
+<!-- ![wisekaijyoujyou](./CA-Nav/7754fc69e4ab08bc68ebb3e245db552b_720.jpg) -->
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/11/02/CA-Nav/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://hirasawagen.github.io/2025/11/01/type_gymnastics/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Hirasawa Gen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hirasawa Gen's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Hirasawa Gen's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/11/01/type_gymnastics/" class="post-title-link" itemprop="url">python的类型体操</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-11-01 17:00:00 / 修改时间：18:46:34" itemprop="dateCreated datePublished" datetime="2025-11-01T17:00:00+08:00">2025-11-01</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1>标准库的类型体操</h1>
+<p>python3.5 pep484 类型标注的引入</p>
+<p>python3.7（PEP 560）（<a target="_blank" rel="noopener" href="https://peps.python.org/pep-0484/"><strong>PEP 484</strong></a> 最初的设计方式使其不会向核心 CPython 解释器引入 <em>任何</em> 更改。 现在类型注解和 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/typing.html#module-typing"><code>typing</code></a> 模块已被社区广泛使用，因此这个限制已被取消。）</p>
+<p>python3.8添加了final Literal TypedDict Protocol</p>
+<p>python3.9弃用List Set Tuple Type等 pep585</p>
+<p>python3.10支持了pep 604X|Y，pep612形参规格 pep613类型别名等</p>
+<p>python3.11 TypeVar Self NotRequired Required LiteralString</p>
+<p>python3.12 大的来了 (pep695)</p>
+<p>python3.14 标注的迟延求值，使用 <code>from __future__ import annotations</code> 的代码的行为将没有变化。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -860,94 +1103,9 @@ mjx-container[display="true"] + br {
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://hirasawagen.github.io/2025/04/17/2025.4.17/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Hirasawa Gen">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hirasawa Gen's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Hirasawa Gen's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/04/17/2025.4.17/" class="post-title-link" itemprop="url">ROS2 Qos问题解决</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-04-17 16:00:00" itemprop="dateCreated datePublished" datetime="2025-04-17T16:00:00+08:00">2025-04-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-05-08 14:18:57" itemprop="dateModified" datetime="2025-05-08T14:18:57+08:00">2025-05-08</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="一、发现问题的契机">一、发现问题的契机</h2>
-<p>​	在小车的系统里面有一个工作空间，里面有很多写好的demo。运行了几个试试，但是其中一个名为“雷达跟随”的demo。却出现了运行没有反应的情况，甚至没有报错。运行多次无果后我逐行阅读了终端上的信息：</p>
-<p><img src="/2025/04/17/2025.4.17/f144e1d6de5f7436be35e35786accda1.png" alt="QOS错误"></p>
-<p>​	经过上网查阅资料排查后，发现问题产生的关键是那句警告：</p>
-<p><code>New publisher discovered on topic '/scan', offering incompatible Qos. No messages will be received from it.</code></p>
-<p>​	也就是节点<code>lasertracker</code>中配置了不合适的Qos，导致该话题无法接收信息。于是我便上网搜索所谓的Qos是什么。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/04/17/2025.4.17/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
 
 </div>
   </main>

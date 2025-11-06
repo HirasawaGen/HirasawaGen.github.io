@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hirasawagen.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.23.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="总结 在日常开发（尤其是计算机视觉、深度学习等对张量 &#x2F; 数组维度敏感的场景）中，维度不匹配是高频且隐蔽的问题。例如忘记池化操作、通道数计算错误、矩阵乘行列不匹配等情况，往往不会在代码执行时立刻报错 —— 程序可能正常运行并输出结果，但错误的维度会像 “隐藏的隐患”，在后续流程（如模型训练、下游任务推理）中突然暴雷，此时排查问题需要回溯整个数据处理链路，耗时耗力。 而通过 oprands_cons">
+<meta property="og:type" content="article">
+<meta property="og:title" content="参数约束">
+<meta property="og:url" content="http://hirasawagen.github.io/2025/11/06/oprands_constraint/index.html">
+<meta property="og:site_name" content="Hirasawa Gen&#39;s Blog">
+<meta property="og:description" content="总结 在日常开发（尤其是计算机视觉、深度学习等对张量 &#x2F; 数组维度敏感的场景）中，维度不匹配是高频且隐蔽的问题。例如忘记池化操作、通道数计算错误、矩阵乘行列不匹配等情况，往往不会在代码执行时立刻报错 —— 程序可能正常运行并输出结果，但错误的维度会像 “隐藏的隐患”，在后续流程（如模型训练、下游任务推理）中突然暴雷，此时排查问题需要回溯整个数据处理链路，耗时耗力。 而通过 oprands_cons">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-11-06T08:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-06T08:46:12.344Z">
+<meta property="article:author" content="Hirasawa Gen">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://hirasawagen.github.io/2025/11/06/oprands_constraint/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://hirasawagen.github.io/2025/11/06/oprands_constraint/","path":"2025/11/06/oprands_constraint/","title":"参数约束"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>参数约束 | Hirasawa Gen's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"per_page":false,"tags":"//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hirasawa Gen's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-github"><a href="https://github.com/HirasawaGen/" rel="section" target="_blank"><i class="fab fa-github fa-fw"></i>github</a></li><li class="menu-item menu-item-csdn"><a href="https://blog.csdn.net/qq_52247089" rel="section" target="_blank"><i class="fa fa-copyright fa-fw"></i>csdn</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E8%BE%93%E5%85%A5%E5%8F%82%E6%95%B0%E7%9A%84%E7%BA%A6%E6%9D%9F"><span class="nav-number">2.</span> <span class="nav-text">对输入参数的约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E8%BE%93%E5%87%BA%E5%8F%82%E6%95%B0%E7%9A%84%E7%BA%A6%E6%9D%9F"><span class="nav-number">3.</span> <span class="nav-text">对输出参数的约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E7%B1%BB%E4%B8%AD%E5%AF%B9%E5%8F%82%E6%95%B0%E8%BF%9B%E8%A1%8C%E7%BA%A6%E6%9D%9F"><span class="nav-number">4.</span> <span class="nav-text">在类中对参数进行约束</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hirasawa Gen"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Hirasawa Gen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hirasawagen.github.io/2025/11/06/oprands_constraint/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Hirasawa Gen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hirasawa Gen's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="参数约束 | Hirasawa Gen's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          参数约束
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-11-06 16:00:00 / 修改时间：16:46:12" itemprop="dateCreated datePublished" datetime="2025-11-06T16:00:00+08:00">2025-11-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="总结">总结</h2>
+<p>在日常开发（尤其是计算机视觉、深度学习等对张量 / 数组维度敏感的场景）中，维度不匹配是高频且隐蔽的问题。例如忘记池化操作、通道数计算错误、矩阵乘行列不匹配等情况，往往不会在代码执行时立刻报错 —— 程序可能正常运行并输出结果，但错误的维度会像 “隐藏的隐患”，在后续流程（如模型训练、下游任务推理）中突然暴雷，此时排查问题需要回溯整个数据处理链路，耗时耗力。</p>
+<p>而通过 <code>oprands_constraint</code> 提供的参数约束能力，我们可以将维度校验前置。函数或网络在对应的约束不满足时会直接报错不往下执行，并且会将具体哪里有问题清晰地在终端输出。</p>
+<!-- ![yukari](./oprands_constraint/c3fce2f6c88edfeac0df73b4c19b1bc5_720.jpg) -->
+<span id="more"></span>
+<h2 id="对输入参数的约束">对输入参数的约束</h2>
+<p>测试代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> oprandsconstraint <span class="keyword">import</span> oprands</span><br><span class="line"><span class="keyword">from</span> validators <span class="keyword">import</span> tensorlike</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> numpy.typing <span class="keyword">import</span> NDArray</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@oprands &lt;&lt; tensorlike[<span class="string">&#x27;*&#x27;</span>, <span class="string">&#x27;a&#x27;</span>]</span></span><br><span class="line"><span class="meta">@oprands &lt;&lt; tensorlike[<span class="string">&#x27;a&#x27;</span>, :<span class="number">8</span>]</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">mat1: NDArray[np.float64], mat2: NDArray[np.float64]</span>) -&gt; NDArray[np.float64]:</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    &#x27;*&#x27;表示尺度随意，无需约束</span></span><br><span class="line"><span class="string">    &#x27;a&#x27;提前约束矩阵1的列数必须等于矩阵2的行数</span></span><br><span class="line"><span class="string">    :8 表示矩阵1的列数必须小于8</span></span><br><span class="line"><span class="string">    不满足约束则会在调用函数之前报错</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;假如这里有复杂且耗时的逻辑，此处用sleep代替&#x27;</span>)</span><br><span class="line">    sleep(<span class="number">10</span>)</span><br><span class="line">    <span class="keyword">return</span> mat1 @ mat2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    mat1 = np.random.rand(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">    mat2 = np.random.rand(<span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line">    <span class="comment"># 满足了func上面要求的约束，所以函数可以正常执行。</span></span><br><span class="line">    <span class="built_in">print</span>(func(mat1, mat2).shape)</span><br><span class="line">    </span><br><span class="line">    mat1 = np.random.rand(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">    mat2 = np.random.rand(<span class="number">9</span>, <span class="number">4</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 不满足mat1的列数必须等于mat2的行数的约束，所以还没执行代码就行报错了</span></span><br><span class="line">        <span class="built_in">print</span>(func(mat1, mat2).shape)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(e)</span><br><span class="line">        </span><br><span class="line">    mat1 = np.random.rand(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">    mat2 = np.random.rand(<span class="number">4</span>, <span class="number">20</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 不满足mat1的列数必须小于8的约束，所以还没执行代码就行报错了</span></span><br><span class="line">        <span class="built_in">print</span>(func(mat1, mat2).shape)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(e)</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+<p>终端输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">假如这里有复杂且耗时的逻辑，此处用sleep代替</span><br><span class="line">(3, 5)</span><br><span class="line">Invalid input at position 1-th:</span><br><span class="line">the 0-th dimension of this tensorlike object must have size 4, (symbol &quot;a&quot;). But you provide 9.</span><br><span class="line">Invalid input at position 1-th:</span><br><span class="line">the 1-th dimension of this tensorlike object must have size in range [0, 8), you provide 20</span><br></pre></td></tr></table></figure>
+<h2 id="对输出参数的约束">对输出参数的约束</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> oprandsconstraint <span class="keyword">import</span> oprands</span><br><span class="line"><span class="keyword">from</span> validators <span class="keyword">import</span> tensorlike</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> numpy.typing <span class="keyword">import</span> NDArray</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@oprands &lt;&lt; tensorlike[<span class="string">&#x27;w&#x27;</span>, <span class="string">&#x27;h&#x27;</span>, <span class="number">3</span>]</span></span><br><span class="line"><span class="meta">@oprands &gt;&gt; tensorlike[<span class="string">&#x27;h//2&#x27;</span>, <span class="string">&#x27;w//2&#x27;</span>]</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func1</span>(<span class="params">image: NDArray[np.float32]</span>) -&gt; NDArray[np.float32]:</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    提取图片的一个通道，并剪裁图片然后反转</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    channel = image[:, :, <span class="number">0</span>]  <span class="comment"># 提取图片的一个通道</span></span><br><span class="line">    w, h = channel.shape </span><br><span class="line">    res = channel[<span class="number">0</span>:w//<span class="number">2</span>, <span class="number">0</span>:h//<span class="number">2</span>]  <span class="comment"># 剪裁图片</span></span><br><span class="line">    res = res.transpose(<span class="number">1</span>, <span class="number">0</span>)  <span class="comment"># 反转图片</span></span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@oprands &lt;&lt; tensorlike[<span class="string">&#x27;w&#x27;</span>, <span class="string">&#x27;h&#x27;</span>, <span class="number">3</span>]</span></span><br><span class="line"><span class="meta">@oprands &gt;&gt; tensorlike[<span class="string">&#x27;h//2&#x27;</span>, <span class="string">&#x27;w//2&#x27;</span>]</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func2</span>(<span class="params">image: NDArray[np.float32]</span>) -&gt; NDArray[np.float32]:</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    提取图片的一个通道，并剪裁图片然后反转</span></span><br><span class="line"><span class="string">    但是不小心忘了反转</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    channel = image[:, :, <span class="number">0</span>]  <span class="comment"># 提取图片的一个通道</span></span><br><span class="line">    w, h = channel.shape </span><br><span class="line">    res = channel[<span class="number">0</span>:w//<span class="number">2</span>, <span class="number">0</span>:h//<span class="number">2</span>]  <span class="comment"># 剪裁图片</span></span><br><span class="line">    <span class="comment"># res = res.transpose(1, 0)  # 忘记反转图片</span></span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    img = np.random.rand(<span class="number">480</span>, <span class="number">640</span>, <span class="number">3</span>).astype(np.float32)</span><br><span class="line">    <span class="built_in">print</span>(func1(img).shape)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="built_in">print</span>(func2(img).shape)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(e)</span><br></pre></td></tr></table></figure>
+<p>终端输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(320, 240)</span><br><span class="line">the 0-th dimension of this tensorlike object must have size 320, (symbol &quot;h//2&quot;). But you provide 240.</span><br></pre></td></tr></table></figure>
+<h2 id="在类中对参数进行约束">在类中对参数进行约束</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> validators <span class="keyword">import</span> tensorlike</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> numpy.typing <span class="keyword">import</span> NDArray</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pool</span>(<span class="params">x: NDArray[np.float32]</span>) -&gt; NDArray[np.float32]:</span><br><span class="line">    <span class="keyword">return</span> x[:, :, ::<span class="number">2</span>, ::<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">conv</span>(<span class="params">x: NDArray[np.float32], out_channels: <span class="built_in">int</span></span>) -&gt; NDArray[np.float32]:</span><br><span class="line">    <span class="keyword">return</span> np.random.randn(x.shape[<span class="number">0</span>], out_channels, x.shape[<span class="number">2</span>], x.shape[<span class="number">3</span>]).astype(np.float32)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">linear</span>(<span class="params">x: NDArray[np.float32], out_features: <span class="built_in">int</span></span>) -&gt; NDArray[np.float32]:</span><br><span class="line">    <span class="keyword">return</span> np.random.randn(x.shape[<span class="number">0</span>], out_features).astype(np.float32)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CNN1</span>:</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    模拟卷积神经网络</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    x = tensorlike[<span class="string">&#x27;batch_size&#x27;</span>, <span class="number">3</span>, <span class="string">&#x27;H&#x27;</span>, <span class="string">&#x27;W&#x27;</span>]  <span class="comment"># 原始输入</span></span><br><span class="line">    x1 = tensorlike[<span class="string">&#x27;batch_size&#x27;</span>, <span class="number">6</span>, <span class="string">&#x27;H//2&#x27;</span>, <span class="string">&#x27;W//2&#x27;</span>]  <span class="comment"># 第一层卷积输出</span></span><br><span class="line">    x2 = tensorlike[<span class="string">&#x27;batch_size&#x27;</span>, <span class="number">12</span>, <span class="string">&#x27;H//4&#x27;</span>, <span class="string">&#x27;W//4&#x27;</span>]  <span class="comment"># 第二层卷积输出</span></span><br><span class="line">    x3 = tensorlike[<span class="string">&#x27;batch_size&#x27;</span>, <span class="number">24</span>, <span class="string">&#x27;H//8&#x27;</span>, <span class="string">&#x27;W//8&#x27;</span>]  <span class="comment"># 第三层卷积输出</span></span><br><span class="line">    y = tensorlike[<span class="string">&#x27;batch_size&#x27;</span>, <span class="string">&#x27;num_classes&#x27;</span>]  <span class="comment"># 最终输出</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, x: NDArray[np.float32]</span>) -&gt; NDArray[np.float32]:</span><br><span class="line">        <span class="variable language_">self</span>.x = x</span><br><span class="line">        x1 = conv(x, <span class="number">6</span>)</span><br><span class="line">        <span class="variable language_">self</span>.x1 = pool(x1)</span><br><span class="line">        x2 = conv(<span class="variable language_">self</span>.x1, <span class="number">12</span>)</span><br><span class="line">        <span class="variable language_">self</span>.x2 = pool(x2)</span><br><span class="line">        x3 = conv(<span class="variable language_">self</span>.x2, <span class="number">24</span>)</span><br><span class="line">        <span class="variable language_">self</span>.x3 = pool(x3)</span><br><span class="line">        <span class="variable language_">self</span>.y = linear(<span class="variable language_">self</span>.x3, <span class="number">10</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.y</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CNN2</span>:</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    模拟卷积神经网络</span></span><br><span class="line"><span class="string">    但是最后一层忘记池化了</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    x = tensorlike[<span class="string">&#x27;batch_size&#x27;</span>, <span class="number">3</span>, <span class="string">&#x27;H&#x27;</span>, <span class="string">&#x27;W&#x27;</span>]  <span class="comment"># 原始输入</span></span><br><span class="line">    x1 = tensorlike[<span class="string">&#x27;batch_size&#x27;</span>, <span class="number">6</span>, <span class="string">&#x27;H//2&#x27;</span>, <span class="string">&#x27;W//2&#x27;</span>]  <span class="comment"># 第一层卷积输出</span></span><br><span class="line">    x2 = tensorlike[<span class="string">&#x27;batch_size&#x27;</span>, <span class="number">12</span>, <span class="string">&#x27;H//4&#x27;</span>, <span class="string">&#x27;W//4&#x27;</span>]  <span class="comment"># 第二层卷积输出</span></span><br><span class="line">    x3 = tensorlike[<span class="string">&#x27;batch_size&#x27;</span>, <span class="number">24</span>, <span class="string">&#x27;H//8&#x27;</span>, <span class="string">&#x27;W//8&#x27;</span>]  <span class="comment"># 第三层卷积输出</span></span><br><span class="line">    y = tensorlike[<span class="string">&#x27;batch_size&#x27;</span>, <span class="string">&#x27;num_classes&#x27;</span>]  <span class="comment"># 最终输出</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, x: NDArray[np.float32]</span>) -&gt; NDArray[np.float32]:</span><br><span class="line">        <span class="variable language_">self</span>.x = x</span><br><span class="line">        x1 = conv(x, <span class="number">6</span>)</span><br><span class="line">        <span class="variable language_">self</span>.x1 = pool(x1)</span><br><span class="line">        x2 = conv(<span class="variable language_">self</span>.x1, <span class="number">12</span>)</span><br><span class="line">        <span class="variable language_">self</span>.x2 = pool(x2)</span><br><span class="line">        <span class="variable language_">self</span>.x3 = conv(<span class="variable language_">self</span>.x2, <span class="number">24</span>)  <span class="comment"># 忘记池化了</span></span><br><span class="line">        <span class="variable language_">self</span>.y = linear(<span class="variable language_">self</span>.x3, <span class="number">10</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CNN3</span>:</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    模拟卷积神经网络</span></span><br><span class="line"><span class="string">    但是最后一次卷积搞错通道数了</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    x = tensorlike[<span class="string">&#x27;batch_size&#x27;</span>, <span class="number">3</span>, <span class="string">&#x27;H&#x27;</span>, <span class="string">&#x27;W&#x27;</span>]  <span class="comment"># 原始输入</span></span><br><span class="line">    x1 = tensorlike[<span class="string">&#x27;batch_size&#x27;</span>, <span class="number">6</span>, <span class="string">&#x27;H//2&#x27;</span>, <span class="string">&#x27;W//2&#x27;</span>]  <span class="comment"># 第一层卷积输出</span></span><br><span class="line">    x2 = tensorlike[<span class="string">&#x27;batch_size&#x27;</span>, <span class="number">12</span>, <span class="string">&#x27;H//4&#x27;</span>, <span class="string">&#x27;W//4&#x27;</span>]  <span class="comment"># 第二层卷积输出</span></span><br><span class="line">    x3 = tensorlike[<span class="string">&#x27;batch_size&#x27;</span>, <span class="number">24</span>, <span class="string">&#x27;H//8&#x27;</span>, <span class="string">&#x27;W//8&#x27;</span>]  <span class="comment"># 第三层卷积输出</span></span><br><span class="line">    y = tensorlike[<span class="string">&#x27;batch_size&#x27;</span>, <span class="string">&#x27;num_classes&#x27;</span>]  <span class="comment"># 最终输出</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, x: NDArray[np.float32]</span>) -&gt; NDArray[np.float32]:</span><br><span class="line">        <span class="variable language_">self</span>.x = x</span><br><span class="line">        x1 = conv(x, <span class="number">6</span>)</span><br><span class="line">        <span class="variable language_">self</span>.x1 = pool(x1)</span><br><span class="line">        x2 = conv(<span class="variable language_">self</span>.x1, <span class="number">12</span>)</span><br><span class="line">        <span class="variable language_">self</span>.x2 = pool(x2)</span><br><span class="line">        x3 = conv(<span class="variable language_">self</span>.x2, <span class="number">48</span>)  <span class="comment"># 最后一次卷积不小心把输出通道写大了</span></span><br><span class="line">        <span class="variable language_">self</span>.x3 = pool(x3)</span><br><span class="line">        <span class="variable language_">self</span>.y = linear(<span class="variable language_">self</span>.x3, <span class="number">10</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.y</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    cnn1 = CNN1()</span><br><span class="line">    cnn2 = CNN2()</span><br><span class="line">    cnn3 = CNN3()</span><br><span class="line">    image = np.random.randn(<span class="number">16</span>, <span class="number">3</span>, <span class="number">224</span>, <span class="number">224</span>).astype(np.float32)</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(cnn1(image).shape)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="built_in">print</span>(cnn2(image).shape)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(e)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="built_in">print</span>(cnn3(image).shape)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(e)</span><br></pre></td></tr></table></figure>
+<p>终端输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(16, 10)</span><br><span class="line">the 2-th dimension of x3 must have size 28, (symbol &quot;H//8&quot;). But you provide 56.</span><br><span class="line">the 1-th dimension of x3 must have size 24, you provide 48</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/HirasawaGen">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">github</span>
+          </a>
+      </div>
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://blog.csdn.net/qq_52247089">
+            <span class="icon">
+              <i class="fa fa-copyright"></i>
+            </span>
+
+            <span class="label">csdn</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/11/02/CA-Nav/" rel="prev" title="在CA-Nav的基础做出改进的几点想法">
+                  <i class="fa fa-angle-left"></i> 在CA-Nav的基础做出改进的几点想法
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hirasawa Gen</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+<script src="/live2d_models/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2d_models/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":true,"model":{"jsonPath":"/live2d_models/assets/assets/miku.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":false},"react":{"opacity":1},"log":false});</script></body>
+</html>
